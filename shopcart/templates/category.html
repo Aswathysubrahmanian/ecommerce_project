@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+    {% if category %}
+        {{ category.description | truncatewords:155 }}
+    {% else %}
+        Welcome to ABC Shop here you explore your favorites!!!!!!!!!
+    {% endif %}
+{% endblock %}
+
+{% block title %}
+    {% if category %}
+        {{ category.description }}ABC
+    {% else %}
+        see your new collections
+    {% endif %}
+{% endblock %}
+
+
+{% block content %}
+    {% if category %}
+        <div>
+            <div class="row my_row_class">
+                <div class="mx-auto">
+                    <p><a href="{%url 'shopcart:allProCat' %}">Our Product Collections</a></p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <div class="mx_auto">
+            {% if category %}
+            <img class="my_image" src="{{ category.image.url }}" alt="{{ category.name }}" style="width:100%;height:200px;">
+        </div> <br>
+        <div>
+            <h1 class="text-center my-title">{{ category.name }}</h1>
+            <p class="text-justify">{{ category.description }}</p>
+
+
+        </div>
+        {% else %}
+        <div>
+            <img class="my_image my_image_padding" src="{% static 'img/logo.png' %}" style="width:100%;height:500px;"
+                 alt="our products">
+
+
+        </div>
+        <br>
+<div>
+    <h1 class="text-center my-title">Our products</h1>
+    <p class="text-justify" style="font-family: 'Climate Crisis', cursive;"> Cras sodales enim et nulla sollicitudin, eget suscipit dui congue. Phasellus a suscipit
+        vulputate ut sem sed, sollicitudin tempus libero. Donec fringilla magna nec libero gravida, ut rutrum lorem
+        facilisis. Sed consectetur erat in dolor mattis ornare. Fusce et odio quis urna venenatis tristique eget a ex.
+        Cras luctus imperdiet purus nec elementum. Phasellus velit tortor, hendrerit dapibus risus eu, posuere iaculis
+        odio. Fusce eu lobortis sapien, quis ullamcorper purus. Praesent egestas consectetur purus, vel molestie tortor
+        rutrum vitae. Suspendisse potenti. Sed ipsum tortor, suscipit at nunc id, fringilla consectetur leo. Nam massa
+        odio, malesuada in justo eget, congue congue purus. Quisque bibendum nunc risus. </p>
+</div>
+{% endif %}
+
+
+
+
+
+<div class="container">
+    <div class="row mx_auto">
+        {% for product in products.object_list %}
+
+        <div class="my_bottom_margin col-9 col-sm-12 col-md-4">
+            <div class="row">
+
+            <div class="card text-center" style="width:400px;height:300px;">
+                <a href="{{product.get_url}}"><img class="card-img-top my_image" style="width:45%;height:70%" src="{{product.image.url}}"
+                                                   alt={{product.name}}""></a>
+                <div class="card-body">
+                    <div>Name:{{ product.name }}</div>
+                    <div>Rs:{{ product.price }}</div>
+
+                </div>
+                </div>
+            </div>
+        </div>
+                    {%endfor%}
+
+        <div class="mx-auto">
+            {% if products.paginator.num_pages > 1 %}
+
+            <hr>
+            <div class="text-center">
+                {% for pg in products.paginator.page_range %}
+                <a href="?page={{pg}}"
+                   class="btn btn-light btn-sm{%if products.number == pg%} active {%endif%}">{{pg}}</a>
+
+                {% endfor %}
+            </div>
+            {% endif %}
+
+        </div>
+        <br>
+
+    </div>
+</div>
+{% endblock %}
